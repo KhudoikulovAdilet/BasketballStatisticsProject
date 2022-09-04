@@ -42,22 +42,22 @@ namespace Basketball.CMD
             if(key.Key == ConsoleKey.G)
             {
                 var games = EnterTeamGame();
-                teamgamecontroller.Add(teamGame.);
+                teamgamecontroller.Add(games.TeamGame, games.myteam);
                 //eatingController.Add(foods.Food, foods.Weight);
 
-                foreach (var item in teamgamecontroller.saveGames.)
+                foreach (var item in teamgamecontroller.saveGames.Savegame)
                 {
-                    Console.WriteLine($"\t {item.Key}");
+                    Console.WriteLine($"\t {item.Key} - {item.Value}");
                 }
             }
 
             Console.ReadLine();
         }
 
-        private static (TeamGame teamGame, string myteam) EnterTeamGame()
+        private static (TeamGame TeamGame, string myteam) EnterTeamGame()
         {
-            Console.Write("Введите название турира");
-            var tournamnetgame = Console.ReadLine();
+            Console.Write("Введите название турнира");
+            var games = Console.ReadLine();
 
             Console.Write("Введите имя вашей команды");
             var myteam = Console.ReadLine();
@@ -74,9 +74,9 @@ namespace Basketball.CMD
             Console.Write("Введите количество ваших личных набранных очков");
             var mypoints = Convert.ToInt32(Console.ReadLine());
 
-            var tg = new TeamGame(tournamnetgame, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
+            var tournament = new TeamGame( games, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
 
-            return (teamgame: tg, myteam: myteam);
+            return (TeamGame: tournament, myteam: myteam);
         }
 
         private static DateTime ParseDateTime()

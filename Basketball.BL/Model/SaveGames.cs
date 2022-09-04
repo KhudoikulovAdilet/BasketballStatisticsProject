@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Basketball.BL.Model
 {
@@ -9,7 +10,7 @@ namespace Basketball.BL.Model
         public DateTime GameDate { get; }
         public DateTime Moment { get; }
 
-        public List<TeamGame> Savegame { get; }
+        public Dictionary<TeamGame, string> Savegame { get; set; }
 
         public User User { get; }
 
@@ -17,11 +18,20 @@ namespace Basketball.BL.Model
         {
             User = user ?? throw new ArgumentNullException("user don't null", nameof(user));
             Moment = DateTime.Now;
-            Savegame = new List<TeamGame>();
+            Savegame = new Dictionary<TeamGame, string>();
         }
-        public void Add(TeamGame teamgame)
+        public void Add(TeamGame teamgame, string myteam)
         {
-            Savegame.Add(teamgame);
+            var tournament = Savegame.Keys.FirstOrDefault(t => t.MyTeam.Equals(myteam));
+
+            if(tournament == null)
+            {
+                Savegame.Add(teamgame, myteam);
+            }
+            else
+            {
+                Savegame[tournament]+= myteam;
+            }
         }
     }
 }

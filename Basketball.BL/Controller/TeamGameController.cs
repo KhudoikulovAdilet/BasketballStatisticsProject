@@ -13,27 +13,32 @@ namespace Basketball.BL.Controller
 
         private const string GAMES_FILE_NAME = "games.dat";
 
-        public List<TeamGame> Games { get; }
+        public List<TeamGame> Teamgames { get; }
 
         public SaveGames saveGames { get; }
 
         public TeamGameController(User user)
         {
             this .user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof (user));
-            Games = GetAllGames();
+            Teamgames = GetAllGames();
             saveGames = GetGames();
 
         }
 
-        public void Add(string tournamentgame)
+        public void Add(TeamGame Teamgame, string myteam)
         {
-            var tournament = Games.SingleOrDefault(t => t.TournementName == tournamentgame);
+            var tournament = Teamgames.SingleOrDefault(t => t.TournementName == Teamgame.TournementName);
             if (tournament == null)
             {
-                Games.Add(tournament);
-                saveGames.Add(tournament);
+                Teamgames.Add(tournament);
+                saveGames.Add(tournament, myteam);
                 Save();
             }
+            else
+            {
+                saveGames.Add(tournament, myteam);
+                Save();
+            }    
         }
 
         private SaveGames GetGames()
@@ -47,7 +52,7 @@ namespace Basketball.BL.Controller
         }
         public void Save()
         {
-            Save(GAMES_FILE_NAME, Games);
+            Save(GAMES_FILE_NAME, Teamgames);
         }
     }
    }
