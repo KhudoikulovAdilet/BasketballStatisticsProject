@@ -9,25 +9,25 @@ namespace Basketball.BL.Model
     [Serializable]
     public class TeamGame
     {
-        
-        public string TournementName { get; set;  }
-        public string MyTeam { get; }
-        public string OpposingTeam { get; }
-        public int MyTeamPoints { get; }
-        public int OpposingTeamPoints { get; }
-        public int MyPoints { get; }
+        public string Name { get; set; }
+        public string MyTeam { get; set; }
+        public string OpposingTeam { get; set; }
+        public int MyTeamPoints { get; set; }
+        public int OpposingTeamPoints { get; set; }
+        public int MyPoints { get; set; }
 
         public virtual ICollection<SaveGames> Savegames { get; set; }
+
         public TeamGame() { }
 
-        public TeamGame(string tournamentgname, 
+        public TeamGame(string name,
             string myteam, 
             string opposingteam, 
             int myteampoints, 
             int opposingteampoints, 
             int mypoints)
         {
-            TournementName = tournamentgname;
+            Name = name;
             MyTeam = myteam;
             OpposingTeam = opposingteam;
             MyTeamPoints = myteampoints;
@@ -38,7 +38,7 @@ namespace Basketball.BL.Model
 
         public override string ToString()
         {
-            return TournementName;
+            return Name;
         }
     }
 }

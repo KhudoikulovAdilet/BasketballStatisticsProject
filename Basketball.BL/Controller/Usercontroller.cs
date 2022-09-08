@@ -40,7 +40,7 @@ namespace Basketball.BL.Controller
 
         private List<User> GetUsersData()
         {
-            return Load<List<User>>(USERS_FILE_NAME) ?? new List<User>();
+            return Load<User>() ?? new List<User>();
         }
         public void SetNewUserData(string lastname, DateTime birthdate)
         {
@@ -52,7 +52,7 @@ namespace Basketball.BL.Controller
         }
         public void Save()
         {
-            Save(USERS_FILE_NAME, Users);
+            Save(Users);
         }
 
     }

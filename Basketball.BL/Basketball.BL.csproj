@@ -42,6 +42,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ControllerBase.cs" />
+    <Compile Include="Controller\IDataSaver.cs" />
+    <Compile Include="Controller\SerializableServer.cs" />
     <Compile Include="Controller\TeamGameController.cs" />
     <Compile Include="Controller\Usercontroller.cs" />
     <Compile Include="Model\SaveGames.cs" />

@@ -1,32 +1,22 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
 namespace Basketball.BL.Controller
 {
-    public class ControllerBase
+    public abstract class ControllerBase
     {
-        protected void Save(string filename, object item)
-        {
-            var formatter = new BinaryFormatter();
+        private readonly IDataSaver manager = new SerializableServer();
 
-            using (var fs = new FileStream(filename, FileMode.OpenOrCreate))
-            {
-                formatter.Serialize(fs, item);
-            }
-        }
-        protected T Load<T>(string filename)
+        protected void Save<T>(List<T> item) where T : class
         {
-            var formatter = new BinaryFormatter();
-            using (var fs = new FileStream(filename, FileMode.OpenOrCreate))
-                if (fs.Length > 0 && formatter.Deserialize(fs) is T games)
-                {
-                    return games;
-                }
-                else
-                {
-                    return default(T);
-                }
+            manager.Save(item);
+        }
+
+        protected List<T> Load<T>() where T : class
+        {
+            return manager.Load<T>();
         }
     }
 }

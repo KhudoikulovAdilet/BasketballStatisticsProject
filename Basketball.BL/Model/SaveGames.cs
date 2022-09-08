@@ -10,27 +10,29 @@ namespace Basketball.BL.Model
         public DateTime GameDate { get; }
         public DateTime Moment { get; }
 
-        public Dictionary<TeamGame, string> Savegame { get; set; }
+        public Dictionary<TeamGame, string> Teamgames { get; set; }
 
-        public User User { get; }
+        public virtual User User { get; }
+
+        public SaveGames() { }
 
         public SaveGames(User user)
         {
             User = user ?? throw new ArgumentNullException("user don't null", nameof(user));
-            Moment = DateTime.Now;
-            Savegame = new Dictionary<TeamGame, string>();
+            Moment = DateTime.UtcNow;
+            Teamgames = new Dictionary<TeamGame, string>();
         }
-        public void Add(TeamGame teamgame, string myteam)
+        public void Add(TeamGame teamgame, string name)
         {
-            var tournament = Savegame.Keys.FirstOrDefault(t => t.MyTeam.Equals(myteam));
+            var tournament = Teamgames.Keys.FirstOrDefault(t => t.Name.Equals(teamgame.Name));
 
             if(tournament == null)
             {
-                Savegame.Add(teamgame, myteam);
+                Teamgames.Add(teamgame, name);
             }
             else
             {
-                Savegame[tournament]+= myteam;
+                Teamgames[tournament]+= name;
             }
         }
     }

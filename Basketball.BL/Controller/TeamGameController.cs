@@ -11,48 +11,46 @@ namespace Basketball.BL.Controller
     {
         private readonly User user;
 
-        private const string GAMES_FILE_NAME = "games.dat";
-
         public List<TeamGame> Teamgames { get; }
 
-        public SaveGames saveGames { get; }
+        public SaveGames Savegames { get; }
 
         public TeamGameController(User user)
         {
-            this .user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof (user));
+            this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof (user));
             Teamgames = GetAllGames();
-            saveGames = GetGames();
-
+            Savegames = GetGames();
         }
 
-        public void Add(TeamGame Teamgame, string myteam)
+        public void Add(TeamGame Teamgame, string name)
         {
-            var tournament = Teamgames.SingleOrDefault(t => t.TournementName == Teamgame.TournementName);
+            var tournament = Teamgames.SingleOrDefault(t => t.Name == Teamgame.Name);
             if (tournament == null)
             {
                 Teamgames.Add(tournament);
-                saveGames.Add(tournament, myteam);
+                Savegames.Add(tournament, name);
                 Save();
             }
             else
             {
-                saveGames.Add(tournament, myteam);
+                Savegames.Add(tournament, name);
                 Save();
             }    
         }
 
         private SaveGames GetGames()
         {
-            return new SaveGames(user) as SaveGames;
+            return Load<SaveGames>().FirstOrDefault() ?? new SaveGames(user);
         }
 
         private List<TeamGame> GetAllGames()
         {
-            return Load<List<TeamGame>>(GAMES_FILE_NAME) ?? new List<TeamGame>();
+            return Load<TeamGame>() ?? new List<TeamGame>() ;
         }
         public void Save()
         {
-            Save(GAMES_FILE_NAME, Teamgames);
+            Save(Teamgames);
+            Save(new List<SaveGames>() {});
         }
     }
    }

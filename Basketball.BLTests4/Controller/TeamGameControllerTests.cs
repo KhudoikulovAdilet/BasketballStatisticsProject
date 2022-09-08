@@ -16,18 +16,18 @@ namespace Basketball.BL.Controller.Tests
         public void AddTest()
         {
             var playername = Guid.NewGuid().ToString();
-            var tournament = Guid.NewGuid().ToString();
+            var tournamentname = Guid.NewGuid().ToString();
             var myteam = Guid.NewGuid().ToString();
-            var opposingteam = Guid.NewGuid().ToString();
-
             var rnd = new Random();
+            var opposingteam = Guid.NewGuid().ToString();
             var usercontroller = new Usercontroller(playername);
             var teamgamecontroller = new TeamGameController(usercontroller.CurrentUser);
-            var teamgames = new TeamGame(tournament, myteam, opposingteam, rnd.Next(50, 500), rnd.Next(50, 500), rnd.Next(50, 500));
+            var teamgames = new TeamGame(tournamentname, myteam, opposingteam, rnd.Next(50, 500), rnd.Next(50, 500), rnd.Next(50, 500));
 
-            teamgamecontroller.Add(tournament);
+            teamgamecontroller.Add(teamgames, myteam);
 
-            Assert.AreEqual(teamgamecontroller.ToString (), teamgamecontroller.ToString());
+            Assert.AreEqual(teamgames.Name, teamgamecontroller.Savegames.Teamgames.First().Key.Name);
+
         }
     }
 }

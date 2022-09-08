@@ -16,9 +16,11 @@ namespace Basketball.CMD
 
         static void Main(string[] args)
         {
-            Console.WriteLine("Вас приветствует приложение Адилета по сохранению игровой статистики");
+            var resourceMeneger = new ResourceManager("Basketball.CMD.Languages.Messages", typeof(Program).Assembly);
 
-            Console.WriteLine("Введите имя пользователя");
+            Console.WriteLine(resourceMeneger.GetString("hello"));
+
+            Console.WriteLine(resourceMeneger.GetString("EnterName"));
             var firstname = Console.ReadLine();
 
             var usercontroller = new Usercontroller(firstname);
@@ -37,15 +39,14 @@ namespace Basketball.CMD
 
             Console.WriteLine("Что вы хотите сделать?");
             Console.WriteLine("Г - ввести результаты командной игры");
-            var key = Console.ReadKey();
+            var keys = Console.ReadKey();
             Console.WriteLine();
-            if(key.Key == ConsoleKey.G)
+            if(keys.Key == ConsoleKey.G)
             {
                 var games = EnterTeamGame();
-                teamgamecontroller.Add(games.TeamGame, games.myteam);
-                //eatingController.Add(foods.Food, foods.Weight);
-
-                foreach (var item in teamgamecontroller.saveGames.Savegame)
+                teamgamecontroller.Add(games.TeamGame, games.name);
+                
+                foreach (var item in teamgamecontroller.Savegames.Teamgames)
                 {
                     Console.WriteLine($"\t {item.Key} - {item.Value}");
                 }
@@ -54,29 +55,29 @@ namespace Basketball.CMD
             Console.ReadLine();
         }
 
-        private static (TeamGame TeamGame, string myteam) EnterTeamGame()
+        private static (TeamGame TeamGame, string name) EnterTeamGame()
         {
-            Console.Write("Введите название турнира");
-            var games = Console.ReadLine();
+            Console.WriteLine("Введите название турнира:");
+            var name = Console.ReadLine();
 
-            Console.Write("Введите имя вашей команды");
+            Console.WriteLine("Введите имя вашей команды:");
             var myteam = Console.ReadLine();
 
-            Console.Write("Введите имя команды соперника");
+            Console.WriteLine("Введите имя команды соперника:");
             var opposingteam = Console.ReadLine();
 
-            Console.Write("Введите колиство очков, набранных вашей командой");
+            Console.WriteLine("Введите колиство очков, набранных вашей командой:");
             var myteampoints = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("Введите колиство очков, набранных командой соперника");
+            Console.WriteLine("Введите колиство очков, набранных командой соперника:");
             var opposingteampoints = Convert.ToInt32(Console.ReadLine());
 
-            Console.Write("Введите количество ваших личных набранных очков");
+            Console.WriteLine("Введите количество ваших личных набранных очков:");
             var mypoints = Convert.ToInt32(Console.ReadLine());
 
-            var tournament = new TeamGame( games, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
+            var tournament = new TeamGame( name, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
 
-            return (TeamGame: tournament, myteam: myteam);
+            return (TeamGame: tournament, name: name);
         }
 
         private static DateTime ParseDateTime()
