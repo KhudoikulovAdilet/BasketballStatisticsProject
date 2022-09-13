@@ -16,15 +16,17 @@ namespace Basketball.CMD
 
         static void Main(string[] args)
         {
-            var resourceMeneger = new ResourceManager("Basketball.CMD.Languages.Messages", typeof(Program).Assembly);
+            //var culture = CultureInfo.CreateSpecificCulture("ru-ru");
+            //var resourceMeneger = new ResourceManager("Basketball.CMD.Languages.Messages", typeof(Program).Assembly);
 
-            Console.WriteLine(resourceMeneger.GetString("hello"));
+            Console.WriteLine("Добро пожаловать в моё приложение");
 
-            Console.WriteLine(resourceMeneger.GetString("EnterName"));
+            Console.WriteLine("Введите ваше имя");
             var firstname = Console.ReadLine();
 
             var usercontroller = new Usercontroller(firstname);
             var teamgamecontroller = new TeamGameController(usercontroller.CurrentUser);
+            var personalgamecontroller = new PersonalGameController(usercontroller.CurrentUser);
 
             if (usercontroller.IsNewUser)
             {
@@ -37,25 +39,61 @@ namespace Basketball.CMD
             }
             Console.WriteLine(usercontroller.CurrentUser);
 
-            Console.WriteLine("Что вы хотите сделать?");
-            Console.WriteLine("Г - ввести результаты командной игры");
-            var keys = Console.ReadKey();
-            Console.WriteLine();
-            if(keys.Key == ConsoleKey.G)
+            while (true)
             {
-                var games = EnterTeamGame();
-                teamgamecontroller.Add(games.TeamGame, games.name);
-                
-                foreach (var item in teamgamecontroller.Savegames.Teamgames)
-                {
-                    Console.WriteLine($"\t {item.Key} - {item.Value}");
-                }
-            }
+                Console.WriteLine("Что вы хотите сделать?");
+                Console.WriteLine("G - ввести результаты командной игры");
+                Console.WriteLine("W - ввести результаты прочих игр");
+                Console.WriteLine("Q - Exit");
+                var keys = Console.ReadKey();
+                Console.WriteLine();
 
-            Console.ReadLine();
+
+                switch (keys.Key)
+                {
+                    case ConsoleKey.G:
+                        var games = EnterTeamGame();
+                        teamgamecontroller.Add(games.Savegame, games.myteam, games.opposingteam, games.myteampoints, games.opposingteampoints, games.mypoint);
+
+                        foreach (var item in teamgamecontroller.teamGame)
+                        {
+                            Console.WriteLine($"{item.MyTeam} : {item.OpposingTeam}");
+                            Console.WriteLine($"{item.MyTeamPoints} : {item.OpposingTeamPoints}");
+                        }
+                        break;
+                    case ConsoleKey.W:
+                        var personal = EnterGamResults();
+                        personalgamecontroller.Add(personal.Personalgame, personal.mypoint, personal.hispoint);
+                       
+                        foreach(var item in personalgamecontroller.gameResults)
+                        {
+                            Console.WriteLine($"Игра {item.TypeOfGame} счёт: {item.MyScore}:{item.HisScore}");
+                        }
+                        break;
+                    case ConsoleKey.Q:
+                        Environment.Exit(0);
+                        break;
+                }
+                Console.ReadLine();
+            }
         }
 
-        private static (TeamGame TeamGame, string name) EnterTeamGame()
+        private static (int mypoint, int hispoint, PersonalGame Personalgame) EnterGamResults()
+        {
+            Console.WriteLine("Введите тип игры: ");
+            var name = Console.ReadLine();
+
+            Console.WriteLine("Введите ваши очки");
+            int mypoint = Convert.ToInt32(Console.ReadLine());
+
+            Console.WriteLine("Введите очки соперника");
+            int hispoint = Convert.ToInt32(Console.ReadLine());
+
+            var personalgame = new PersonalGame(name);
+            return (mypoint, hispoint, personalgame);
+        }
+                    
+        private static (SaveGames Savegame, string myteam, string opposingteam,  int myteampoints, int opposingteampoints, int mypoint) EnterTeamGame()
         {
             Console.WriteLine("Введите название турнира:");
             var name = Console.ReadLine();
@@ -75,9 +113,9 @@ namespace Basketball.CMD
             Console.WriteLine("Введите количество ваших личных набранных очков:");
             var mypoints = Convert.ToInt32(Console.ReadLine());
 
-            var tournament = new TeamGame( name, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
+            var tournamenttt = new SaveGames(name);
 
-            return (TeamGame: tournament, name: name);
+            return (tournamenttt, myteam, opposingteam, myteampoints, opposingteampoints, mypoints);
         }
 
         private static DateTime ParseDateTime()

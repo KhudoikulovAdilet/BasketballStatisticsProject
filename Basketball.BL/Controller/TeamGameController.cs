@@ -11,36 +11,39 @@ namespace Basketball.BL.Controller
     {
         private readonly User user;
 
-        public List<TeamGame> Teamgames { get; }
+        public List<TeamGame> teamGame { get; }
 
-        public SaveGames Savegames { get; }
+        public List<SaveGames> saveGames { get; }
 
         public TeamGameController(User user)
         {
-            this.user = user ?? throw new ArgumentNullException("Пользователь не может быть пустым.", nameof (user));
-            Teamgames = GetAllGames();
-            Savegames = GetGames();
+            this.user = user ?? throw new ArgumentNullException(nameof(user));
+
+            teamGame = GetAllGames();
+            saveGames = GetGames();
         }
 
-        public void Add(TeamGame Teamgame, string name)
+        public void Add(SaveGames Savegames, string ourteam, string opponentteam, int ourpoints, int theirpoints, int mypoints)
         {
-            var tournament = Teamgames.SingleOrDefault(t => t.Name == Teamgame.Name);
-            if (tournament == null)
+            var turnir = saveGames.SingleOrDefault(t => t.Name == Savegames.Name);
+            if (turnir == null)
             {
-                Teamgames.Add(tournament);
-                Savegames.Add(tournament, name);
-                Save();
+                saveGames.Add(Savegames);
+
+                var igra = new TeamGame(ourteam, opponentteam, ourpoints, theirpoints, mypoints, user);
+                teamGame.Add(igra);
             }
             else
             {
-                Savegames.Add(tournament, name);
-                Save();
-            }    
+                var igra = new TeamGame(ourteam, opponentteam, ourpoints, theirpoints, mypoints, user);
+                teamGame.Add(igra);
+            }
+            Save();
         }
 
-        private SaveGames GetGames()
+        private List<SaveGames> GetGames()
         {
-            return Load<SaveGames>().FirstOrDefault() ?? new SaveGames(user);
+            return Load<SaveGames>() ?? new List<SaveGames>();
         }
 
         private List<TeamGame> GetAllGames()
@@ -49,7 +52,8 @@ namespace Basketball.BL.Controller
         }
         public void Save()
         {
-            Save(Teamgames);
+            Save(saveGames);
+            Save(teamGame);
             Save(new List<SaveGames>() {});
         }
     }

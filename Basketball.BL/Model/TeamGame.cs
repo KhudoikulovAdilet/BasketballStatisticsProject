@@ -9,36 +9,27 @@ namespace Basketball.BL.Model
     [Serializable]
     public class TeamGame
     {
-        public string Name { get; set; }
-        public string MyTeam { get; set; }
+        public string MyTeam { get; }
         public string OpposingTeam { get; set; }
-        public int MyTeamPoints { get; set; }
         public int OpposingTeamPoints { get; set; }
-        public int MyPoints { get; set; }
+        public int MyTeamPoints { get; set; }
+        public int MyPoint { get; }
 
-        public virtual ICollection<SaveGames> Savegames { get; set; }
+        public User User { get; set; }
 
-        public TeamGame() { }
-
-        public TeamGame(string name,
-            string myteam, 
+        public TeamGame(string myteam,
             string opposingteam, 
-            int myteampoints, 
             int opposingteampoints, 
-            int mypoints)
+            int myteampoints,
+            int mypoint,
+            User user) 
         {
-            Name = name;
             MyTeam = myteam;
             OpposingTeam = opposingteam;
             MyTeamPoints = myteampoints;
             OpposingTeamPoints = opposingteampoints;
-            MyPoints = mypoints;
-
-        }
-
-        public override string ToString()
-        {
-            return Name;
+            MyPoint = mypoint;
+            User = user;
         }
     }
 }

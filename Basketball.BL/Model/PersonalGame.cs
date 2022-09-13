@@ -10,14 +10,12 @@ namespace Basketball.BL.Model
     public class PersonalGame
     {
         public string Name { get; }
-        public string FinRez { get; }
 
-        public PersonalGame(string name, string finrez)
+        public PersonalGame(string name)
         {
             Name = name;
-            FinRez = finrez;
         }
-
+         
         public override string ToString()
         {
             return Name;

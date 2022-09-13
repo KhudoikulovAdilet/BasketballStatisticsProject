@@ -56,6 +56,7 @@
     <Otherwise />
   </Choose>
   <ItemGroup>
+    <Compile Include="Controller\PersonalGameControllerTests.cs" />
     <Compile Include="Controller\TeamGameControllerTests.cs" />
     <Compile Include="Controller\UsercontrollerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
