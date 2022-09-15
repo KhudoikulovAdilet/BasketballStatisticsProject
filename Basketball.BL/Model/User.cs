@@ -1,13 +1,18 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Basketball.BL.Model
 {
     [Serializable]
     public class User
     {
+        public int Id { get; set; }
         public string FirstName { get; set;  } // Имя
         public string LastName { get; set; } // Фамилия
         public DateTime BirthDate { get; set; } // Дата рождения
+        
+        public virtual ICollection<SaveGames> SaveGames { get; set; }
+        public virtual ICollection<GameResults> GameResults { get; set; }
 
         public int Age { get { return DateTime.Now.Year - BirthDate.Year; } }
 

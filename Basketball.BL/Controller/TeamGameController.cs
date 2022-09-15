@@ -29,7 +29,7 @@ namespace Basketball.BL.Controller
             if (turnir == null)
             {
                 saveGames.Add(Savegames);
-
+                
                 var igra = new TeamGame(ourteam, opponentteam, ourpoints, theirpoints, mypoints, user);
                 teamGame.Add(igra);
             }

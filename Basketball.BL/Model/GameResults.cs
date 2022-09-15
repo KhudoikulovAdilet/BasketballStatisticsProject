@@ -9,12 +9,15 @@ namespace Basketball.BL.Model
     [Serializable]
     public class GameResults
     {
+        public int Id { get; set; }
         public PersonalGame TypeOfGame { get; }
-        public int MyScore { get; }
-        public int HisScore { get; }
+        public int MyScore { get; set; }
+        public int HisScore { get; set; }
+        public virtual PersonalGame PersonalGame { get; set; }
+        public int UserId { get; set; }
+        public virtual User User { get; }
 
-        public User User { get; }
-
+        public GameResults() { }
         public GameResults(int myscore, int hisscore, User user)
         {
             MyScore = myscore;

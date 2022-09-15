@@ -9,6 +9,7 @@ namespace Basketball.BL.Model
     [Serializable]
     public class TeamGame
     {
+        public int Id { get; set; }
         public string MyTeam { get; }
         public string OpposingTeam { get; set; }
         public int OpposingTeamPoints { get; set; }
@@ -16,6 +17,10 @@ namespace Basketball.BL.Model
         public int MyPoint { get; }
 
         public User User { get; set; }
+
+        public virtual ICollection<SaveGames> SaveGames { get; set; }
+
+        public TeamGame() { }
 
         public TeamGame(string myteam,
             string opposingteam, 
